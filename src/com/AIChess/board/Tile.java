@@ -7,6 +7,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * this class represent a tile in a chess board.
+ */
 public abstract class Tile {
     protected Position pos;
 
@@ -34,8 +37,16 @@ public abstract class Tile {
         this.pos = new Position(x,y);
     }
 
-    public abstract boolean isTileOccupaied();
+    /**
+     * check if a tile is occupied.
+     * @return - true if the tile is occupied.
+     */
+    public abstract boolean isTileOccupied();
 
+    /**
+     * check for a piece on the tile
+     * @return - the piece on the tile, if the tile is empty return null.
+     */
     public abstract Piece getPiece();
 
 }

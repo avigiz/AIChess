@@ -9,28 +9,32 @@ import com.AIChess.board.Tile;
 import java.util.ArrayList;
 import java.util.List;
 
+
 /**
- * this class represent a bishop in a chess game.
+ * this class represent a queen in a chess game.
  */
-public class Bishop extends Piece {
-    public Bishop(int pieceXCorr, int pieceYCorr, com.AIChess.Alliance alliance) {
+public class Queen extends Piece {
+    public Queen(int pieceXCorr, int pieceYCorr, com.AIChess.Alliance alliance) {
         super(pieceXCorr, pieceYCorr, alliance);
     }
 
     @Override
     public List<Move> calculateLegalMoves(Board board) {
-        Position currPos = this.piecePosition;
         List<Move> legalMoves = new ArrayList<>();
-        //check for all 4 diagonals of the bishop.
+        //get all 8 direction of the queen's moves.
         addMovesToDirection(board, legalMoves, 1, 1);
         addMovesToDirection(board, legalMoves, 1, -1);
         addMovesToDirection(board, legalMoves, -1, 1);
         addMovesToDirection(board, legalMoves, -1, -1);
+        addMovesToDirection(board, legalMoves, 1, 0);
+        addMovesToDirection(board, legalMoves, 0, -1);
+        addMovesToDirection(board, legalMoves, 0, 1);
+        addMovesToDirection(board, legalMoves, -1, 0);
         return legalMoves;
     }
 
     /**
-     * adding moves of a certain direction of the bishop.
+     * adding moves of a certain direction of the queen.
      * @param board - the board's game.
      * @param legalMoves - the list of possible moves.
      * @param deltaX - the new direction in the X axis.
@@ -41,35 +45,33 @@ public class Bishop extends Piece {
         boolean finish = false;
         while (!finish)
         {
-            //new position to check.
-            newDestenation = new Position(this.getPosition().getXCorr() + deltaX, this.getPosition().getYCorr() + deltaY);
-            //check if the new position is legal.
+            //new destination position.
+            newDestenation = new Position(this.piecePosition.getXCorr() + deltaX, this.piecePosition.getYCorr() + deltaY);
+            //check position is legal.
             if (newDestenation.IsPositionLegal())
             {
-                //getting the destination tile.
                 Tile candidateDestinationTile = board.getTile(newDestenation);
-                //if its empty tile need to add the move to the moves list.
+                //check if tile is empty.
                 if (!candidateDestinationTile.isTileOccupied())
                 {
                     legalMoves.add(new Move());
                 }
-                //if the tile is occupied, check if it's an enemy piece.
+                //tile is occupied.
                 else
                 {
-                    //add attack move.
+                    //check if the piece on the tile is an enemy piece.
                     if (candidateDestinationTile.getPiece().Alliance != this.Alliance)
                         legalMoves.add(new Move());
-                    //same alliance.
                     else
                         finish = true;
                 }
             }
-            //the tile isn't legal.
+            //tile is not legal.
             else
             {
                 finish = true;
             }
-            //updating the new destination direction.
+            //updating the delta for next candidate move.
             deltaX = deltaX + deltaX;
             deltaY = deltaY + deltaY;
         }

@@ -2,6 +2,9 @@ package com.AIChess.board;
 
 import com.AIChess.Pieces.Piece;
 
+/**
+ * this class represent an occupied tile on chess board.
+ */
 public class OccupiedTile extends Tile {
 
     private final Piece pieceOnTheTile;
@@ -12,7 +15,7 @@ public class OccupiedTile extends Tile {
     }
 
     @Override
-    public boolean isTileOccupaied() {
+    public boolean isTileOccupied() {
         return true;
     }
 
