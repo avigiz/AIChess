@@ -53,4 +53,9 @@ public class Knight extends Piece {
         }
         return legalMoves;
     }
+
+    @Override
+    public String toString(){
+        return PieceType.KNIGHT.toString();
+    }
 }

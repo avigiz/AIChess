@@ -70,4 +70,9 @@ public class Rook extends Piece{
             deltaY = deltaY + deltaY;
         }
     }
+
+    @Override
+    public String toString(){
+        return PieceType.ROOK.toString();
+    }
 }

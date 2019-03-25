@@ -74,4 +74,9 @@ public class Bishop extends Piece {
             deltaY = deltaY + deltaY;
         }
     }
+
+    @Override
+    public String toString(){
+        return PieceType.BISHOP.toString();
+    }
 }

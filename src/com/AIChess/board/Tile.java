@@ -30,7 +30,7 @@ public abstract class Tile {
         if (piece != null)
             return new OccupiedTile(CorrX,CorrY,piece);
         else
-            return Empty_Tiles_Cache.get(new Position(CorrX,CorrY));
+            return new EmptyTile(CorrX,CorrY);
     }
 
     public Tile (int x, int y){
@@ -48,5 +48,6 @@ public abstract class Tile {
      * @return - the piece on the tile, if the tile is empty return null.
      */
     public abstract Piece getPiece();
+
 
 }

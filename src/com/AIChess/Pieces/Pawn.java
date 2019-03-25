@@ -107,4 +107,9 @@ public class Pawn extends Piece{
             if (board.getTile(opponentCandidatePos).getPiece().getPieceAlliance() != this.Alliance)
                 legalMoves.add(new Move());
     }
+
+    @Override
+    public String toString(){
+        return PieceType.PAWN.toString();
+    }
 }
