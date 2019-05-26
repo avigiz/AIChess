@@ -1,10 +1,7 @@
 package com.AIChess.Pieces;
 
-import com.AIChess.Alliance;
+import com.AIChess.board.*;
 import com.AIChess.board.Board;
-import com.AIChess.board.Move;
-import com.AIChess.board.Position;
-import com.AIChess.board.Tile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +11,7 @@ import java.util.List;
  */
 public class Rook extends Piece{
     public Rook(int pieceXCorr, int pieceYCorr, com.AIChess.Alliance alliance) {
-        super(pieceXCorr, pieceYCorr, alliance);
+        super(pieceXCorr, pieceYCorr, alliance,PieceType.ROOK);
     }
 
     @Override
@@ -48,14 +45,14 @@ public class Rook extends Piece{
                 //check the tile is empty.
                 if (!candidateDestinationTile.isTileOccupied())
                 {
-                    legalMoves.add(new Move());
+                    legalMoves.add(new Move.regularMove(board,this,candidateDestinationTile.getPosition()));
                 }
                 //tile is occupied.
                 else
                 {
                     //check the piece is an enemy piece.
                     if (candidateDestinationTile.getPiece().Alliance != this.Alliance)
-                        legalMoves.add(new Move());
+                        legalMoves.add(new Move.attackMove(board,this,candidateDestinationTile.getPosition(),candidateDestinationTile.getPiece()));
                     else
                         finish = true;
                 }
@@ -71,6 +68,11 @@ public class Rook extends Piece{
         }
     }
 
+    @Override
+    public Rook movePiece(Move move) {
+        return new Rook(move.getMovedPiece().getPosition().getXCorr(),move.getMovedPiece().getPosition().getYCorr(),
+                move.getMovedPiece().getPieceAlliance());
+    }
     @Override
     public String toString(){
         return PieceType.ROOK.toString();

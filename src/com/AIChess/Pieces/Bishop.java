@@ -1,10 +1,7 @@
 package com.AIChess.Pieces;
 
-import com.AIChess.Alliance;
+import com.AIChess.board.*;
 import com.AIChess.board.Board;
-import com.AIChess.board.Move;
-import com.AIChess.board.Position;
-import com.AIChess.board.Tile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +11,7 @@ import java.util.List;
  */
 public class Bishop extends Piece {
     public Bishop(int pieceXCorr, int pieceYCorr, com.AIChess.Alliance alliance) {
-        super(pieceXCorr, pieceYCorr, alliance);
+        super(pieceXCorr, pieceYCorr, alliance,PieceType.BISHOP);
     }
 
     @Override
@@ -27,6 +24,12 @@ public class Bishop extends Piece {
         addMovesToDirection(board, legalMoves, -1, 1);
         addMovesToDirection(board, legalMoves, -1, -1);
         return legalMoves;
+    }
+
+    @Override
+    public Bishop movePiece(Move move) {
+        return new Bishop(move.getMovedPiece().getPosition().getXCorr(),move.getMovedPiece().getPosition().getYCorr(),
+                move.getMovedPiece().getPieceAlliance());
     }
 
     /**
@@ -51,14 +54,14 @@ public class Bishop extends Piece {
                 //if its empty tile need to add the move to the moves list.
                 if (!candidateDestinationTile.isTileOccupied())
                 {
-                    legalMoves.add(new Move());
+                    legalMoves.add(new Move.regularMove(board,this,candidateDestinationTile.getPosition()));
                 }
                 //if the tile is occupied, check if it's an enemy piece.
                 else
                 {
                     //add attack move.
                     if (candidateDestinationTile.getPiece().Alliance != this.Alliance)
-                        legalMoves.add(new Move());
+                        legalMoves.add(new Move.attackMove(board,this,candidateDestinationTile.getPosition(),candidateDestinationTile.getPiece()));
                     //same alliance.
                     else
                         finish = true;

@@ -1,11 +1,7 @@
 package com.AIChess.Pieces;
 
-import com.AIChess.Alliance;
+import com.AIChess.board.*;
 import com.AIChess.board.Board;
-import com.AIChess.board.Move;
-import com.AIChess.board.Position;
-import com.AIChess.board.Tile;
-import javafx.util.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +11,7 @@ import java.util.List;
  */
 public class King extends Piece {
     public King(int pieceXCorr, int pieceYCorr, com.AIChess.Alliance alliance) {
-        super(pieceXCorr, pieceYCorr, alliance);
+        super(pieceXCorr, pieceYCorr, alliance,PieceType.KING);
     }
 
     @Override
@@ -44,19 +40,24 @@ public class King extends Piece {
                 //check the tile is an empty tile.
                 if (!candidateDestinationTile.isTileOccupied())
                 {
-                    legalMoves.add(new Move());
+                    legalMoves.add(new Move.regularMove(board,this,candidateDestinationTile.getPosition()));
                 }
                 //check if the piece on the destanation tile is enemy piece.
                 else
                 {
                     if (candidateDestinationTile.getPiece().Alliance != this.Alliance)
-                        legalMoves.add(new Move());
+                        legalMoves.add(new Move.attackMove(board,this,candidateDestinationTile.getPosition(),candidateDestinationTile.getPiece()));
                 }
             }
         }
         return legalMoves;
     }
 
+    @Override
+    public King movePiece(Move move) {
+        return new King(move.getMovedPiece().getPosition().getXCorr(),move.getMovedPiece().getPosition().getYCorr(),
+                move.getMovedPiece().getPieceAlliance());
+    }
     @Override
     public String toString(){
         return PieceType.KING.toString();

@@ -11,7 +11,7 @@ import java.util.Map;
  * this class represent a tile in a chess board.
  */
 public abstract class Tile {
-    protected Position pos;
+    protected Position position;
 
     private static final Map<Pair<Integer, Integer>, EmptyTile> Empty_Tiles_Cache = createAllPosibleEmptyTile();
 
@@ -34,7 +34,7 @@ public abstract class Tile {
     }
 
     public Tile (int x, int y){
-        this.pos = new Position(x,y);
+        this.position = new Position(x,y);
     }
 
     /**
@@ -50,4 +50,7 @@ public abstract class Tile {
     public abstract Piece getPiece();
 
 
+    public Position getPosition(){
+        return position;
+    }
 }

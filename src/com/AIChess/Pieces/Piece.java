@@ -12,14 +12,29 @@ import java.util.List;
  */
 public abstract class Piece {
 
+    protected static PieceType pieceType;
     protected final Position piecePosition;
     protected final Alliance Alliance;
     protected final boolean firstMoveDone;
+    private final int cacheHashCode;
 
-    public Piece(int pieceXCorr, int pieceYCorr, com.AIChess.Alliance alliance) {
+    public Piece(int pieceXCorr, int pieceYCorr, com.AIChess.Alliance alliance,PieceType pieceType) {
         this.piecePosition = new Position(pieceXCorr,pieceYCorr);
         this.Alliance = alliance;
         firstMoveDone = false;
+        this.pieceType = pieceType;
+        this.cacheHashCode = computeHashCode();
+    }
+
+    protected int computeHashCode(){
+        int result = pieceType.hashCode();
+        result = 31 * result + Alliance.hashCode();
+        result = 31 * result + piecePosition.getXCorr() + piecePosition.getYCorr();
+        if (firstMoveDone)
+            result = 31 * result + 1;
+        else
+            result = 31 * result;
+        return result;
     }
 
     /**
@@ -28,6 +43,21 @@ public abstract class Piece {
      * @return - a list of the moves that the piece can do at this stage.
      */
     public abstract List<Move> calculateLegalMoves (Board board);
+
+
+
+    public abstract Piece movePiece(Move move);
+
+
+    public static PieceType getType() {
+        return pieceType;
+    }
+
+    public PieceType getPieceType(){
+        return this.pieceType;
+    }
+
+
 
     public Position getPosition(){
         return this.piecePosition;
@@ -40,4 +70,21 @@ public abstract class Piece {
     public boolean getFirstMoveDone(){
         return this.firstMoveDone;
     }
+
+    @Override
+    public int hashCode(){
+        return this.cacheHashCode;
+    }
+
+    @Override
+    public boolean equals(Object other){
+        if (this == other)
+            return true;
+        if (!(other instanceof Piece))
+            return false;
+        Piece otherPiece = (Piece) other;
+        return  piecePosition.equals(otherPiece.getPosition()) && pieceType == otherPiece.getPieceType() &&
+                this.Alliance == otherPiece.getPieceAlliance() && this.firstMoveDone == otherPiece.firstMoveDone;
+    }
+
 }

@@ -32,4 +32,10 @@ public class Position {
     public int getYCorr() {
         return YCorr;
     }
+
+    public boolean equals(Position pos){
+        if (this.XCorr == pos.getXCorr() && this.YCorr == pos.getYCorr())
+            return true;
+        return false;
+    }
 }

@@ -26,13 +26,9 @@ public class OccupiedTile extends Tile {
 
     @Override
     public String toString(){
-        if (isTileOccupied())
-        {
             if (getPiece().getPieceAlliance().isBlack())
-                getPiece().toString().toLowerCase();
+                return getPiece().toString().toLowerCase();
             else
-                getPiece().toString().toUpperCase();
-        }
-        return toString();
+                return getPiece().toString().toUpperCase();
     }
 }

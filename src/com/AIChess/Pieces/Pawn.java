@@ -1,9 +1,7 @@
 package com.AIChess.Pieces;
 
-import com.AIChess.Alliance;
+import com.AIChess.board.*;
 import com.AIChess.board.Board;
-import com.AIChess.board.Move;
-import com.AIChess.board.Position;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +11,7 @@ import java.util.List;
  */
 public class Pawn extends Piece{
     public Pawn(int pieceXCorr, int pieceYCorr, com.AIChess.Alliance alliance) {
-        super(pieceXCorr, pieceYCorr, alliance);
+        super(pieceXCorr, pieceYCorr, alliance,PieceType.PAWN);
     }
 
     @Override
@@ -21,12 +19,12 @@ public class Pawn extends Piece{
         int direction = 0;
         List<Move> legalMoves = new ArrayList<>();
         //check for direction of advancing.
-        //if the piece is while, advancing in direction 1.
-        //if the piece is black, advancing in direction -1.
+        //if the piece is while, advancing in direction -1.
+        //if the piece is black, advancing in direction 1.
         if (this.Alliance.isWhite())
-            direction = 1;
-        else
             direction = -1;
+        else
+            direction = 1;
         //todo anpasant.
         //todo promotion.
         //check for attack moves.
@@ -44,7 +42,7 @@ public class Pawn extends Piece{
      * @param direction - the piece direction.
      */
     private void addAdvanceMoves(Board board,List<Move> legalMoves, int direction) {
-        Position oneTile = new Position(this.getPosition().getXCorr(),this.getPosition().getYCorr() + direction);
+        Position oneTile = new Position(this.getPosition().getXCorr() + direction,this.getPosition().getYCorr());
         boolean isOneTileFree = false;
         //check for advancing for 1 tile.
         if (oneTile.IsPositionLegal())
@@ -52,7 +50,7 @@ public class Pawn extends Piece{
             //check the destination tile is empty.
             if (!board.getTile(oneTile).isTileOccupied())
             {
-                legalMoves.add(new Move());
+                legalMoves.add(new Move.regularMove(board,this,oneTile));
                 //update that one tile advance is free.
                 isOneTileFree = true;
             }
@@ -70,11 +68,11 @@ public class Pawn extends Piece{
      * @param direction - the direction of the piece.
      */
     private void checkTwoTilesMove(Board board, List<Move> legalMoves, int direction) {
-        Position twoTiles =  new Position(this.getPosition().getXCorr(),this.getPosition().getYCorr()+ (2 * direction));
+        Position twoTiles =  new Position(this.getPosition().getXCorr() + (2 * direction),this.getPosition().getYCorr());
         //the tile is legal because its a first move.
         //need to check that the tow tiles advance is empty.
             if (!board.getTile(twoTiles).isTileOccupied())
-                legalMoves.add(new Move());
+                legalMoves.add(new Move.regularMove(board,this,twoTiles));
     }
 
     /**
@@ -105,7 +103,14 @@ public class Pawn extends Piece{
         if (board.getTile(opponentCandidatePos).isTileOccupied())
             //check if the alliances are different.
             if (board.getTile(opponentCandidatePos).getPiece().getPieceAlliance() != this.Alliance)
-                legalMoves.add(new Move());
+                legalMoves.add(new Move.attackMove(board,this,opponentCandidatePos,board.getTile(opponentCandidatePos).getPiece()));
+    }
+
+
+    @Override
+    public Pawn movePiece(Move move) {
+        return new Pawn(move.getMovedPiece().getPosition().getXCorr(),move.getMovedPiece().getPosition().getYCorr(),
+                move.getMovedPiece().getPieceAlliance());
     }
 
     @Override

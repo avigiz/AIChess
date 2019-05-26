@@ -1,10 +1,7 @@
 package com.AIChess.Pieces;
 
-import com.AIChess.Alliance;
+import com.AIChess.board.*;
 import com.AIChess.board.Board;
-import com.AIChess.board.Move;
-import com.AIChess.board.Position;
-import com.AIChess.board.Tile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +12,7 @@ import java.util.List;
  */
 public class Queen extends Piece {
     public Queen(int pieceXCorr, int pieceYCorr, com.AIChess.Alliance alliance) {
-        super(pieceXCorr, pieceYCorr, alliance);
+        super(pieceXCorr, pieceYCorr, alliance,PieceType.QUEEN);
     }
 
     @Override
@@ -54,14 +51,14 @@ public class Queen extends Piece {
                 //check if tile is empty.
                 if (!candidateDestinationTile.isTileOccupied())
                 {
-                    legalMoves.add(new Move());
+                    legalMoves.add(new Move.regularMove(board,this,candidateDestinationTile.getPosition()));
                 }
                 //tile is occupied.
                 else
                 {
                     //check if the piece on the tile is an enemy piece.
                     if (candidateDestinationTile.getPiece().Alliance != this.Alliance)
-                        legalMoves.add(new Move());
+                        legalMoves.add(new Move.attackMove(board,this,candidateDestinationTile.getPosition(),candidateDestinationTile.getPiece()));
                     else
                         finish = true;
                 }
@@ -75,6 +72,12 @@ public class Queen extends Piece {
             deltaX = deltaX + deltaX;
             deltaY = deltaY + deltaY;
         }
+    }
+
+    @Override
+    public Queen movePiece(Move move) {
+        return new Queen(move.getMovedPiece().getPosition().getXCorr(),move.getMovedPiece().getPosition().getYCorr(),
+                move.getMovedPiece().getPieceAlliance());
     }
 
     @Override
