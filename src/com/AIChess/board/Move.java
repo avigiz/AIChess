@@ -44,18 +44,21 @@ public abstract class Move {
 
         Board.Builder builder =  new Board.Builder();
 
+        //setting all the pieces of current player. except the moving piece.
         for (Piece piece : this.board.getCurrPlayer().getActivePieces()){
             if (!this.movedPiece.equals(piece)){
                 builder.setPiece(piece);
             }
         }
-
+        //setting all the pieces of the opponent player.
         for (Piece piece : this.board.getCurrPlayer().getOpponent().getActivePieces()){
                 builder.setPiece(piece);
         }
-
+        //setting the moving piece.
         builder.setPiece(this.movedPiece.movePiece(this));
-        builder.setNextMoveMaker(this.board.getCurrPlayer().getOpponent().getAlliance());
+
+        //change the move maker to the opponent.
+        builder.setMoveMaker(this.board.getCurrPlayer().getOpponent().getAlliance());
         return builder.bulid();
     }
 
@@ -90,8 +93,9 @@ public abstract class Move {
     }
 
 
-
-
+    /**
+     * this class represent an attack move.
+     */
     public static class attackMove extends Move {
 
         Piece attackedPiece;
@@ -129,7 +133,9 @@ public abstract class Move {
     }
 
 
-
+    /**
+     * this class represent a regular move, not an attack move.
+     */
     public static class regularMove extends Move {
         public regularMove(Board board, Piece piece, Position destinationPos) {
             super(board, piece, destinationPos);
@@ -137,54 +143,79 @@ public abstract class Move {
 
     }
 
-    public static class PwanMove extends Move {
-        public PwanMove(Board board, Piece piece, Position destinationPos) {
+    /**
+     * this class represent pawn move.
+     */
+    public static class PawnMove extends Move {
+        public PawnMove(Board board, Piece piece, Position destinationPos) {
             super(board, piece, destinationPos);
         }
     }
 
-
-    public class PwanAttackMove extends attackMove {
-        public PwanAttackMove(Board board, Piece movedPiece, Position destinationPos, Piece attackedPiece) {
+    /**
+     * this class represent pawn attack move.
+     */
+    public class PawnAttackMove extends attackMove {
+        public PawnAttackMove(Board board, Piece movedPiece, Position destinationPos, Piece attackedPiece) {
             super(board, movedPiece, destinationPos, attackedPiece);
         }
     }
 
-
-    public class PwanEnPassantAttackMove extends PwanAttackMove {
-        public PwanEnPassantAttackMove(Board board, Piece movedPiece, Position destinationPos, Piece attackedPiece) {
+    /**
+     * this class represent a pawn EnPassant move.
+     */
+    public class PawnEnPassantAttackMove extends PawnAttackMove {
+        public PawnEnPassantAttackMove(Board board, Piece movedPiece, Position destinationPos, Piece attackedPiece) {
             super(board, movedPiece, destinationPos, attackedPiece);
         }
     }
 
-    public static class PwanJump extends Move {
-        public PwanJump(Board board, Piece piece, Position destinationPos) {
+    /**
+     * this class represent pawn jump of two tiles.
+     */
+    public static class PawnJump extends Move {
+        public PawnJump(Board board, Piece piece, Position destinationPos) {
             super(board, piece, destinationPos);
         }
 
+        /**
+         * execute the jump move of a pawn.
+         * @return - the new board after the move.
+         */
         @Override
         public Board execute(){
             final Board.Builder builder = new Board.Builder();
+            //setting all the pieces of current player. except the moving pawn.
             for (Piece piece : this.board.getCurrPlayer().getActivePieces()) {
                 if (!this.movedPiece.equals(piece)) {
                     builder.setPiece(piece);
                 }
             }
+
+            //setting all the pieces of the opponent player.
             for (Piece piece : this.board.getCurrPlayer().getOpponent().getActivePieces()){
                 builder.setPiece(piece);
             }
 
             Pawn movedPawn = (Pawn) this.movedPiece.movePiece(this);
+            //setting the moving piece.
             builder.setPiece(movedPawn);
+
+            //setting the piece to be the EnPassant pawn for the opponent.
             builder.setEnPassantPawn(movedPawn);
-            builder.setNextMoveMaker(board.getCurrPlayer().getOpponent().getAlliance());
+
+            //change the move maker to the opponent.
+            builder.setMoveMaker(board.getCurrPlayer().getOpponent().getAlliance());
             return builder.bulid();
 
         }
     }
 
 
-
+    /**
+     * the class represent a null move.
+     * which is an invalid move.
+     */
     public static class NullMove extends Move {
         public NullMove() {
             super(null, null, new Position(-1,-1));
@@ -196,11 +227,13 @@ public abstract class Move {
         }
     }
 
-
+    /**
+     * this class represent a class that return all the exist move that possible.
+     */
     public static class MoveFactory {
 
         private  MoveFactory(){
-            throw new RuntimeException("Not instantiavle!");
+            throw new RuntimeException("Not instantiable!");
         }
 
         public static Move createMove(Board board, Position currPos, Position destPos){

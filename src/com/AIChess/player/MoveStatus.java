@@ -1,5 +1,12 @@
 package com.AIChess.player;
 
+/**
+ * this enum is for the moving status.
+ * done represent a legal move.
+ * illegal represent a illegal move.
+ * leaves palyer in check represent illegal move that after executing the move the players king is in check,
+ * which make the move as illegal.
+ */
 public enum MoveStatus {
 
     DONE{
@@ -9,7 +16,7 @@ public enum MoveStatus {
         }
 
         @Override
-        boolean isIllega() {
+        boolean isIllegal() {
             return false;
         }
     },
@@ -20,7 +27,7 @@ public enum MoveStatus {
         }
 
         @Override
-        boolean isIllega() {
+        boolean isIllegal() {
             return true;
         }
     },LEAVES_PLAYER_IN_CHECK {
@@ -30,7 +37,7 @@ public enum MoveStatus {
         }
 
         @Override
-        boolean isIllega() {
+        boolean isIllegal() {
             return false;
         }
     };
@@ -40,5 +47,5 @@ public enum MoveStatus {
 
     abstract boolean isDone();
 
-    abstract boolean isIllega();
+    abstract boolean isIllegal();
 }

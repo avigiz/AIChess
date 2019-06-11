@@ -33,6 +33,12 @@ public class Position {
         return YCorr;
     }
 
+    /**
+     * check if a given position is equals to the current position.
+     * check by the x and y coordinates.
+     * @param pos - the given position.
+     * @return - true if and only if the two positions are equals.
+     */
     public boolean equals(Position pos){
         if (this.XCorr == pos.getXCorr() && this.YCorr == pos.getYCorr())
             return true;

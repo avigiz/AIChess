@@ -107,9 +107,9 @@ public class Board {
         for (int row = 0; row < boardUtils.numOfRow; row++)
         {
             for (int col = 0; col < boardUtils.numOfCol; col++)
-                if (gameBoard[row][col].isTileOccupied())
-                    if (gameBoard[row][col].getPiece().getPieceAlliance() == alliance)
-                        activePieces.add(gameBoard[row][col].getPiece());
+                //check the tile is occupied and the alliances are the same.
+                if (gameBoard[row][col].isTileOccupied() && gameBoard[row][col].getPiece().getPieceAlliance() == alliance)
+                    activePieces.add(gameBoard[row][col].getPiece());
         }
         return activePieces;
     }
@@ -140,7 +140,7 @@ public class Board {
      */
     public static Board initBoardStartPosition(){
         final Builder builder = new Builder();
-
+        //black's major pieces.
         builder.setPiece(new Rook(0,0,Alliance.BLACK));
         builder.setPiece(new Knight(0,1,Alliance.BLACK));
         builder.setPiece(new Bishop(0,2,Alliance.BLACK));
@@ -149,8 +149,7 @@ public class Board {
         builder.setPiece(new Bishop(0,5,Alliance.BLACK));
         builder.setPiece(new Knight(0,6,Alliance.BLACK));
         builder.setPiece(new Rook(0,7,Alliance.BLACK));
-
-
+        //black's pawns.
         builder.setPiece(new Pawn(1,0,Alliance.BLACK));
         builder.setPiece(new Pawn(1,1,Alliance.BLACK));
         builder.setPiece(new Pawn(1,2,Alliance.BLACK));
@@ -159,7 +158,7 @@ public class Board {
         builder.setPiece(new Pawn(1,5,Alliance.BLACK));
         builder.setPiece(new Pawn(1,6,Alliance.BLACK));
         builder.setPiece(new Pawn(1,7,Alliance.BLACK));
-
+        //while's major pieces.
         builder.setPiece(new Rook(7,0,Alliance.WHTIE));
         builder.setPiece(new Knight(7,1,Alliance.WHTIE));
         builder.setPiece(new Bishop(7,2,Alliance.WHTIE));
@@ -168,8 +167,7 @@ public class Board {
         builder.setPiece(new Bishop(7,5,Alliance.WHTIE));
         builder.setPiece(new Knight(7,6,Alliance.WHTIE));
         builder.setPiece(new Rook(7,7,Alliance.WHTIE));
-
-
+        //white's pawns
         builder.setPiece(new Pawn(6,0,Alliance.WHTIE));
         builder.setPiece(new Pawn(6,1,Alliance.WHTIE));
         builder.setPiece(new Pawn(6,2,Alliance.WHTIE));
@@ -178,6 +176,8 @@ public class Board {
         builder.setPiece(new Pawn(6,5,Alliance.WHTIE));
         builder.setPiece(new Pawn(6,6,Alliance.WHTIE));
         builder.setPiece(new Pawn(6,7,Alliance.WHTIE));
+
+        //set the white as the beginner.
         builder.moveMaker = Alliance.WHTIE;
         return builder.bulid();
     }
@@ -201,6 +201,7 @@ public class Board {
         //save the current move maker.
         private Alliance moveMaker;
 
+        //saves a pawn for enPassant calc
         private Pawn enPassantPwan;
 
         public Builder() {
@@ -208,14 +209,22 @@ public class Board {
         }
 
 
-
+        /**
+         * setting a pieces on the board using the builder.
+         * @param piece - the pieces to set.
+         * @return - the builder who sets the piece.
+         */
         public Builder setPiece(Piece piece){
             this.boardCon.put(new Pair<>(piece.getPosition().getXCorr(),piece.getPosition().getYCorr()),piece);
             return this;
         }
 
-
-        public Builder setNextMoveMaker(Alliance alliance){
+        /**
+         * setting the move maker using the builder.
+         * @param alliance - the alliance of the move maker.
+         * @return - the builder who set the alliance.
+         */
+        public Builder setMoveMaker(Alliance alliance){
             this.moveMaker = alliance;
             return this;
         }
@@ -228,6 +237,7 @@ public class Board {
             return new Board(this);
         }
 
+        //TODO : implement.
         public void setEnPassantPawn(Pawn movedPawn) {
         }
     }

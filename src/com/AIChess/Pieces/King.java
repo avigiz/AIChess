@@ -19,7 +19,6 @@ public class King extends Piece {
         List<Move> legalMoves = new ArrayList<>();
         List<Position> allPossiableMoves = new ArrayList<>();
 
-        //todo castling.
         //check all 8 directions of the king possible moves.
         allPossiableMoves.add(new Position(1,1));
         allPossiableMoves.add(new Position(1,-1));

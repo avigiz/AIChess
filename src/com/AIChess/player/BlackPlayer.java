@@ -8,6 +8,9 @@ import com.AIChess.board.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * this class represent the black player in the chess game.
+ */
 public class BlackPlayer extends Player{
     public BlackPlayer(Board board, List<Move> blackLegalMoves, List<Move> whiteLegalMoves) {
         super(board,blackLegalMoves,whiteLegalMoves);
@@ -68,6 +71,6 @@ public class BlackPlayer extends Player{
                 }
             }
         }
-        return null;
+        return kingCastles;
     }
 }

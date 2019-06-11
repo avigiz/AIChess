@@ -1,5 +1,8 @@
 package com.AIChess.Pieces;
 
+/**
+ * enum of the pieces type.
+ */
 public enum PieceType {
 
     PAWN("P"){
@@ -69,7 +72,15 @@ public enum PieceType {
         return this.pieceType;
     }
 
+    /**
+     * abstract function that check if a piece is a king.
+     * @return - true if the piece is a king.
+     */
     public abstract boolean isKing();
 
+    /**
+     * abstract function that check if a piece is a rook.
+     * @return - true if the piece is a rook.
+     */
     public abstract boolean isRook();
 }

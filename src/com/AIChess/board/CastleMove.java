@@ -8,7 +8,9 @@ import com.AIChess.Pieces.Rook;
  * this class has two sub classes of king side casting and queen side castling.
  */
 public abstract class CastleMove extends Move {
+    //the rook of the castle move.
     protected Rook castleRook;
+
     protected Position castleRookStartPos;
     protected Position castleRookDestPos;
 
@@ -37,21 +39,27 @@ public abstract class CastleMove extends Move {
     public Board execute(){
         Board.Builder builder =  new Board.Builder();
 
+        //setting all the pieces of current player. except the moving piece - King.
         for (Piece piece : this.board.getCurrPlayer().getActivePieces()){
             if (!this.movedPiece.equals(piece) && !this.castleRook.equals(piece)){
                 builder.setPiece(piece);
             }
         }
 
+        //setting all the pieces of the opponent player.
         for (Piece piece : this.board.getCurrPlayer().getOpponent().getActivePieces()){
             builder.setPiece(piece);
         }
 
+        //setting the moving piece - the King.
         builder.setPiece(this.movedPiece.movePiece(this));
+
+        //setting the rook to the new position.
         builder.setPiece(new Rook(this.castleRook.getPosition().getXCorr(),this.castleRook.getPosition().getYCorr()
                 ,this.castleRook.getPieceAlliance()));
 
-        builder.setNextMoveMaker(this.board.getCurrPlayer().getOpponent().getAlliance());
+        //change the move maker to the opponent.
+        builder.setMoveMaker(this.board.getCurrPlayer().getOpponent().getAlliance());
         return builder.bulid();
     }
 

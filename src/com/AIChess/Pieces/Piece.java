@@ -26,6 +26,10 @@ public abstract class Piece {
         this.cacheHashCode = computeHashCode();
     }
 
+    /**
+     * calc the hash code of the current piece.
+     * @return - the hash value of the current piece.
+     */
     protected int computeHashCode(){
         int result = pieceType.hashCode();
         result = 31 * result + Alliance.hashCode();
@@ -45,7 +49,11 @@ public abstract class Piece {
     public abstract List<Move> calculateLegalMoves (Board board);
 
 
-
+    /**
+     * abstract class that move the piece by the given move.
+     * @param move - the given move.
+     * @return - the new piece that moved.
+     */
     public abstract Piece movePiece(Move move);
 
 
